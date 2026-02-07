@@ -28,8 +28,8 @@ class Settings(BaseSettings):
 
     # Shiprocket API
     SHIPROCKET_BASE_URL: str = "https://apiv2.shiprocket.in/v1/external"
-    SHIPROCKET_EMAIL: str
-    SHIPROCKET_PASSWORD: str
+    SHIPROCKET_EMAIL: str = "your_email@company.com"
+    SHIPROCKET_PASSWORD: str = "your_password"
 
     # Redis
     REDIS_URL: str = "redis://redis:6379/0"
