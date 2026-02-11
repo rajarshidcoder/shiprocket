@@ -18,6 +18,22 @@ services:
     networks:
       - shiprocket_network
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: shiprocket_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - shiprocket_network
+
   redis:
     image: redis:7-alpine
     container_name: shiprocket_redis
@@ -51,10 +67,11 @@ services:
         condition: service_healthy
     networks:
       - shiprocket_network
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: sh -c "sed -i 's/\r$//' docker-entrypoint.sh && sh docker-entrypoint.sh uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
 
 volumes:
   postgres_data:
+  pgadmin_data:
   redis_data:
 
 
